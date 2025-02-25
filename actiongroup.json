@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "actionGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "Unique name within the resource group for the Action group."
+        }
+      },
+      "actionGroupShortName": {
+        "type": "string",
+        "metadata": {
+          "description": "Short name up to 12 characters for the Action group."
+        }
+      }
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Insights/actionGroups",
+        "apiVersion": "2021-09-01",
+        "name": "[parameters('actionGroupName')]",
+        "location": "Global",
+        "properties": {
+          "groupShortName": "[parameters('actionGroupShortName')]",
+          "enabled": true,
+          "smsReceivers": [
+            {
+              "name": "contosoSMS",
+              "countryCode": "1",
+              "phoneNumber": "5555551212"
+            },
+            {
+              "name": "contosoSMS2",
+              "countryCode": "1",
+              "phoneNumber": "5555552121"
+            }
+          ],
+          "emailReceivers": [
+            {
+              "name": "contosoEmail",
+              "emailAddress": "devops@contoso.com",
+              "useCommonAlertSchema": true
+            },
+            {
+              "name": "contosoEmail2",
+              "emailAddress": "devops2@contoso.com",
+              "useCommonAlertSchema": true
+            }
+          ],
+          "webhookReceivers": [
+            {
+              "name": "contosoHook",
+              "serviceUri": "http://requestb.in/1bq62iu1",
+              "useCommonAlertSchema": true
+            },
+            {
+              "name": "contosoHook2",
+              "serviceUri": "http://requestb.in/1bq62iu2",
+              "useCommonAlertSchema": true
+            }
+          ]
+        }
+      }
+    ],
+    "outputs": {
+      "actionGroupId": {
+        "type": "string",
+        "value": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+      }
+    }
+  }
